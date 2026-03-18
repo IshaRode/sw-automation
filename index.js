@@ -4,7 +4,7 @@ const fs = require('fs');
 const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSc8RRUAG8n8nPB9dm21m_MxwHQ-JuDnEj7GnvwEkWXykkKFuQ/viewform';
 
 (async () => {
-  const browser = await chromium.launch({ headless: false });
+  const browser = await chromium.launch({ headless: true });
 
   let storageState;
   if (process.env.AUTH_STATE) {
