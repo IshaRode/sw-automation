@@ -1,0 +1,46 @@
+name: Kalvium Daily Report
+
+on:
+  schedule:
+    - cron: '0 14 * * 1-5'   # Mon–Fri, 7:30 PM IST
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - run: npm install
+      - run: npx playwright install chromium
+
+      - name: Run automation
+        run: npm start
+        env:
+          AUTH_STATE: ${{ secrets.AUTH_STATE }}
+
+      - name: Send failure email
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: ❌ Kalvium Daily Report FAILED
+          to: ${{ secrets.EMAIL_TO }}
+          from: Kalvium Automation <${{ secrets.EMAIL_USERNAME }}>
+          body: |
+            ❌ Kalvium daily automation failed.
+
+            Repo: ${{ github.repository }}
+            Workflow: ${{ github.workflow }}
+            Branch: ${{ github.ref_name }}
+
+            Run link:
+            https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}

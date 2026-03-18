@@ -1,0 +1,11 @@
+{
+  "name": "kalvium-daily-automation",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.42.0",
+    "google-spreadsheet": "^4.1.0"
+  }
+}
