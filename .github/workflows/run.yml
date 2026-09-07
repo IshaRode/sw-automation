@@ -2,7 +2,7 @@ name: Kalvium Daily Report
 
 on:
   schedule:
-    - cron: '0 14 * * 1-5'   # Mon–Fri, 7:30 PM IST
+    - cron: '30 9 * * 1-5'   # Mon–Fri, 3:00 PM IST
   workflow_dispatch:
 
 env:

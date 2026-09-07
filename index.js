@@ -8,12 +8,12 @@ const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSc8RRUAG8n8nPB9dm21m_
 
   let storageState;
   if (process.env.AUTH_STATE) {
-      storageState = JSON.parse(process.env.AUTH_STATE);
+    storageState = JSON.parse(process.env.AUTH_STATE);
   } else if (fs.existsSync('auth.json')) {
-      const authContent = fs.readFileSync('auth.json', 'utf-8');
-      if (authContent.trim() !== '' && authContent.trim() !== '{}') {
-          storageState = 'auth.json';
-      }
+    const authContent = fs.readFileSync('auth.json', 'utf-8');
+    if (authContent.trim() !== '' && authContent.trim() !== '{}') {
+      storageState = 'auth.json';
+    }
   }
 
   const contextOptions = storageState ? { storageState } : {};
@@ -31,7 +31,7 @@ const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSc8RRUAG8n8nPB9dm21m_
   }
 
   console.log('Filling Page 1...');
-  
+
   // 1. Checkbox "Record email"
   const checkbox = page.getByRole('checkbox');
   if (await checkbox.count() > 0) {
@@ -48,20 +48,20 @@ const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSc8RRUAG8n8nPB9dm21m_
   await page.getByRole('button', { name: 'Next' }).click();
 
   console.log('Waiting for Page 2...');
-  
+
   // Wait for the next page to load
   await page.waitForLoadState('networkidle');
   await page.getByText('What were your key tasks for the day?').waitFor({ state: 'visible', timeout: 15000 });
 
   console.log('Filling Page 2...');
-  
+
   // 4. Fill textboxes
   const textboxes = page.getByRole('textbox');
-  
-  await textboxes.nth(0).fill('Work on task');
-  await textboxes.nth(1).fill('none');
-  await textboxes.nth(2).fill('none');
-  await textboxes.nth(3).fill('Optimize');
+
+  await textboxes.nth(0).fill('Work on SW project and raised PR');
+  await textboxes.nth(1).fill('N/A');
+  await textboxes.nth(2).fill('N/A');
+  await textboxes.nth(3).fill('Work on next task for Simulated work');
 
   console.log('Clicking Next on Page 2...');
   // 5. Next button on Page 2
@@ -81,7 +81,7 @@ const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSc8RRUAG8n8nPB9dm21m_
   // Usually includes "Your response has been recorded" or similar.
   // We'll just wait for the URL to contain formResponse securely
   await page.waitForURL(/\/formResponse/, { timeout: 15000 }).catch(() => {
-     console.log('Could not verify URL change, but continuing...');
+    console.log('Could not verify URL change, but continuing...');
   });
   await page.waitForTimeout(2000); // Give it a moment
 
