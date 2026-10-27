@@ -10,7 +10,7 @@ env:
 
 jobs:
   run:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v4
@@ -20,7 +20,7 @@ jobs:
           node-version: 18
 
       - run: npm install
-      - run: npx playwright install chromium
+      - run: npx playwright install --with-deps chromium
 
       - name: Run automation
         run: npm start
@@ -36,7 +36,7 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: ❌ Kalvium Daily Report FAILED
-          to: ${{ secrets.EMAIL_TO }}
+          to: ${{ secrets.EMAIL_TO || secrets.EMAIL_USERNAME }}
           from: Kalvium Automation <${{ secrets.EMAIL_USERNAME }}>
           body: |
             ❌ Kalvium daily automation failed.
